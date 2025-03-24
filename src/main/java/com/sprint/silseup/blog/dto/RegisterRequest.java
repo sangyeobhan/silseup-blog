@@ -1,11 +1,8 @@
 package com.sprint.silseup.blog.dto;
 
-import lombok.Data;
 import lombok.NonNull;
 
-import java.time.Instant;
-
-public record SignupRequest(
+public record RegisterRequest(
         @NonNull String id,
         @NonNull String password,
         @NonNull String email,

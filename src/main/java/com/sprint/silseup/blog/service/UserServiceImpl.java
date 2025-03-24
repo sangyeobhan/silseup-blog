@@ -3,6 +3,7 @@ package com.sprint.silseup.blog.service;
 import com.sprint.silseup.blog.dto.RegisterRequest;
 import com.sprint.silseup.blog.entity.User;
 import com.sprint.silseup.blog.repository.UserRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -25,7 +26,9 @@ public class UserServiceImpl implements UserService {
         validatePassword(request.password());
         validateNickname(request.nickname());
 
-        User user = new User(request.id(), request.password(), request.email(), request.nickname());
+        String hashedPassword = BCrypt.hashpw(request.password(), BCrypt.gensalt());
+
+        User user = new User(request.id(), hashedPassword, request.email(), request.nickname());
         userRepository.save(user);
     }
 
