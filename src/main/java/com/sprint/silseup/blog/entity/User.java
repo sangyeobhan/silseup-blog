@@ -3,11 +3,14 @@ package com.sprint.silseup.blog.entity;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter
 @ToString
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String password;
     private String email;
