@@ -1,9 +1,9 @@
 package com.sprint.silseup.blog.controller;
 
-import com.sprint.silseup.blog.dto.LoginRequest;
-import com.sprint.silseup.blog.dto.LoginResponse;
-import com.sprint.silseup.blog.dto.RegisterRequest;
-import com.sprint.silseup.blog.dto.RegisterResponse;
+import com.sprint.silseup.blog.dto.user.LoginRequest;
+import com.sprint.silseup.blog.dto.user.LoginResponse;
+import com.sprint.silseup.blog.dto.user.RegisterRequest;
+import com.sprint.silseup.blog.dto.user.RegisterResponse;
 import com.sprint.silseup.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

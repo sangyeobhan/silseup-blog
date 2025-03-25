@@ -1,4 +1,4 @@
-package com.sprint.silseup.blog.dto;
+package com.sprint.silseup.blog.dto.user;
 
 import lombok.NonNull;
 
