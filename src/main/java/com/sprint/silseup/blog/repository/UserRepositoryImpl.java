@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl extends AbstractFileRepository<Map<String, User>> implements UserRepository {
-    private Map<String, User> data;
+    private final Map<String, User> data;
 
     public UserRepositoryImpl(@Value("${blog.repository.file-directory}") String directory) {
         super(directory, User.class.getSimpleName()+".ser");
