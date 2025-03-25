@@ -14,14 +14,13 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
-//예외처리 로직 추가
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
 
     @Override
     public void register(RegisterRequest request) {
@@ -42,12 +41,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(request.id())
                 .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        // 비밀번호 검증
         if (!BCrypt.checkpw(request.password(), user.getPassword())) {
             throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
 
-        // JWT 토큰 생성 및 반환
         return jwtUtil.generateToken(user.getId());
     }
 
@@ -58,18 +55,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateNickname(String nickname) {
-        if (isNullOrBlank(nickname)) {
-            throw new InvalidInputException("닉네임 입력 필요");
-        }
         if (nickname.length() < 3 || nickname.length() > 50) {
             throw new InvalidInputException("닉네임 길이는 3~50");
         }
     }
 
     private void validatePassword(String password) {
-        if (isNullOrBlank(password)) {
-            throw new InvalidInputException("password 입력 필요");
-        }
         if (password.length() < 12 || password.length() > 50) {
             throw new InvalidInputException("password 길이는 12~50");
         }
@@ -105,10 +96,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateEmail(String email) {
-        if (isNullOrBlank(email)) {
-            throw new InvalidInputException("email 입력 필요");
-        }
-
         if (email.length() > 100) {
             throw new InvalidInputException("이메일은 100글자 이하");
         }
@@ -119,15 +106,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateId(String id) {
-        if (isNullOrBlank(id)) {
-            throw new InvalidInputException("ID 입력 필요");
-        }
         if (id.length() < 6 || id.length() > 30) {
             throw new InvalidInputException("id 길이는 6~30");
         }
-    }
-
-    private boolean isNullOrBlank(String input) {
-        return input == null || input.isBlank();
     }
 }
