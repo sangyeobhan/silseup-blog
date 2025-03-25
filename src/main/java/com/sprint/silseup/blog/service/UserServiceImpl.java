@@ -1,22 +1,23 @@
 package com.sprint.silseup.blog.service;
 
+import com.sprint.silseup.blog.dto.LoginRequest;
 import com.sprint.silseup.blog.dto.RegisterRequest;
 import com.sprint.silseup.blog.entity.User;
 import com.sprint.silseup.blog.repository.UserRepository;
+import com.sprint.silseup.blog.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
-
+//예외처리 로직 추가
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$");
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void register(RegisterRequest request) {
@@ -30,6 +31,20 @@ public class UserServiceImpl implements UserService {
 
         User user = new User(request.id(), hashedPassword, request.email(), request.nickname());
         userRepository.save(user);
+    }
+
+    @Override
+    public String login(LoginRequest request) {
+        User user = userRepository.findById(request.id())
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        // 비밀번호 검증
+        if (!BCrypt.checkpw(request.password(), user.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // JWT 토큰 생성 및 반환
+        return jwtUtil.generateToken(user.getId());
     }
 
     private void validateUniqueId(String id) {

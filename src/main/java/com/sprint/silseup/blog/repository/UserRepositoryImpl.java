@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl extends AbstractFileRepository<Map<String, User>> implements UserRepository {
@@ -31,5 +31,10 @@ public class UserRepositoryImpl extends AbstractFileRepository<Map<String, User>
     @Override
     public boolean existsById(String id) {
         return data.containsKey(id);
+    }
+
+    @Override
+    public Optional<User> findById(String id) {
+        return Optional.ofNullable(data.get(id));
     }
 }
