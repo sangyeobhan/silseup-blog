@@ -1,6 +1,7 @@
 package com.sprint.silseup.blog.repository;
 
 import com.sprint.silseup.blog.entity.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -11,8 +12,8 @@ import java.util.Optional;
 public class UserRepositoryImpl extends AbstractFileRepository<Map<String, User>> implements UserRepository {
     private Map<String, User> data;
 
-    public UserRepositoryImpl() {
-        super("data", User.class.getSimpleName()+".ser");
+    public UserRepositoryImpl(@Value("${blog.repository.file-directory}") String directory) {
+        super(directory, User.class.getSimpleName()+".ser");
         this.data = loadData();
     }
 
