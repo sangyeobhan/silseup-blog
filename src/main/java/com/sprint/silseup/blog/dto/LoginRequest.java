@@ -1,4 +1,7 @@
 package com.sprint.silseup.blog.dto;
 
-public record LoginRequest() {
+public record LoginRequest(
+        String id,
+        String password
+) {
 }
